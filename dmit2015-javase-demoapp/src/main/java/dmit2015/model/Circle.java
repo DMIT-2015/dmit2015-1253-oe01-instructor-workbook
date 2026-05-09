@@ -1,8 +1,17 @@
 package dmit2015.model;
 
+/**
+ * This class models a Circle shape.
+ *
+ * @author Sam Wu
+ * @version 2026.05.08
+ */
 public class Circle {
 
+    // Define a field to track the radius of this circle
     private double radius;
+
+    // Getters/Setters for fields
 
     public double getRadius() {
         return radius;
@@ -15,10 +24,17 @@ public class Circle {
         this.radius = radius;
     }
 
+    /**
+     * Create a new Circle with a radius of 1.0
+     */
     public Circle() {
         setRadius(1.0);
     }
 
+    /**
+     * Create a new Circle with a specific radius
+     * @param radius the radius of the circle
+     */
     public Circle(double radius) {
 //        this.radius = radius;
         setRadius(radius);
@@ -26,6 +42,14 @@ public class Circle {
 
     public double getArea() {
         return Math.PI * radius * radius;
+    }
+
+    public double getDiameter() {
+        return 2 * radius;
+    }
+
+    public double getPerimeter() {
+        return 2 * Math.PI * radius;
     }
 
 }
