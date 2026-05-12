@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="primefaces">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Hello JSF</title>
+</head>
+<body>
+<ui:fragment>
+
+</ui:fragment>
+
+<h:form>
+    <p:messages />
+    <h:outputLabel for="name" value="User Name"/>
+    <h:inputText id="name" value="#{helloBean.userName}"/>
+    <h:commandButton value="Submit"
+                     action="@form"/>
+
+    <h:outputText value="Hello #{helloBean.userName}" />s
+</h:form>
+
+<ui:fragment>
+
+</ui:fragment>
+</body>
+</html>
