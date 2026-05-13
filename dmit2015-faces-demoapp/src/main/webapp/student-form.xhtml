@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="jakarta.faces.core"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="primefaces">
+<f:view>
+    <h:head></h:head>
+    <h:body>
+
+<h:form>
+    <p:messages showDetail="true" closable="true" />
+
+    <p:panel header="Student Registration">
+        <p:outputLabel for="fullName" value="Full Name" />
+        <p:inputText id="fullName"
+                     value="#{studentFormView.fullName}"
+                     required="true"
+                     requiredMessage="Full name is required" />
+
+        <br /><br />
+
+        <p:outputLabel for="program" value="Program" />
+        <p:selectOneMenu id="program"
+                        value="#{studentFormView.program}">
+            <f:selectItem itemLabel="Select Program" itemValue="" />
+            <f:selectItem itemLabel="Digital Media and IT" itemValue="DMIT" />
+            <f:selectItem itemLabel="Softare Development" itemValue="SDEV" />
+        </p:selectOneMenu>
+
+        <br /><br />
+
+        <p:selectBooleanCheckbox
+                value="#{studentFormView.fullTime}"
+                itemLabel="Full Time Student"/>
+
+        <br /> <br />
+
+        <p:commandButton value="Submit"
+                         action="#{studentFormView.submit()}"
+                         update="@form" />
+
+    </p:panel>
+</h:form>
+
+    </h:body>
+</f:view>
+</html>
