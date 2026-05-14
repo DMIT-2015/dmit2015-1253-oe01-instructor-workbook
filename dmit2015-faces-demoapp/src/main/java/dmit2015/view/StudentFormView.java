@@ -1,6 +1,5 @@
 package dmit2015.view;
 
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
@@ -9,9 +8,8 @@ import jakarta.inject.Named;
 import java.io.Serializable;
 
 @Named
-//@ViewScoped
-@RequestScoped
-public class StudentFormView  {
+@ViewScoped
+public class StudentFormView implements Serializable {
 
     private String fullName;
     private String program;
