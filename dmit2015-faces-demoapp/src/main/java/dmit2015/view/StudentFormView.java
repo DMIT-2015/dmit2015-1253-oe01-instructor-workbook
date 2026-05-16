@@ -25,6 +25,12 @@ public class StudentFormView implements Serializable {
                 .addMessage(null, message);
     }
 
+    public void reset() {
+        fullName = null;
+        program = null;
+        fullTime = false;
+    }
+
     public String getFullName() {
         return fullName;
     }
