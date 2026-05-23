@@ -1,0 +1,40 @@
+// Firebase Realtime Database stores JSON data in a JSON Tree structure
+
+### Push new JSON data to the path
+POST https://dmit2015-1253-oe01-swu-default-rtdb.firebaseio.com/Student.json
+Content-Type: application/json
+
+{
+  "firstName": "Connor3",
+  "lastName": "McDavid3",
+  "section": "Edmonton Oilers"
+}
+
+### Read JSON data by path
+GET https://dmit2015-1253-oe01-swu-default-rtdb.firebaseio.com/Student.json
+
+### Read JSON data by path and primary key value
+@primaryKeyValue = -OtHGxfPOaR8vBPrLdr2
+GET https://dmit2015-1253-oe01-swu-default-rtdb.firebaseio.com/Student/{{primaryKeyValue}}.json
+
+### Write JSON data - will replace all properties with the properties in the request body - if you miss a property it will be removed
+PUT https://dmit2015-1253-oe01-swu-default-rtdb.firebaseio.com/Student/{{primaryKeyValue}}.json
+Content-Type: application/json
+
+{
+  "firstName": "Leon",
+  "lastName": "Draistl",
+  "section": "Edmonton Oilers"
+}
+
+### Remove JSON data - use this if you want to delete data
+@deletePrimaryKeyValue = -OtHGytHjI5GvKDYRZzm
+DELETE https://dmit2015-1253-oe01-swu-default-rtdb.firebaseio.com/Student/{{deletePrimaryKeyValue}}.json
+
+### Update data - use this if you want to update some of the properties but not all of them
+PATCH https://dmit2015-1253-oe01-swu-default-rtdb.firebaseio.com/Student/{{primaryKeyValue}}.json
+Content-Type: application/json
+
+{
+  "section": "DMIT2015-OE01"
+}
