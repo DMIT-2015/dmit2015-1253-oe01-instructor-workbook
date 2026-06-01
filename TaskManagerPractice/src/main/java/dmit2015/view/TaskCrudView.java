@@ -1,7 +1,7 @@
 package dmit2015.view;
 
-import dmit2015.model.Student;
-import dmit2015.service.StudentService;
+import dmit2015.model.Task;
+import dmit2015.service.TaskService;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -21,37 +21,37 @@ import java.util.List;
  * This Jakarta Faces backing bean class contains the data and event handlers
  * to perform CRUD operations using a PrimeFaces DataTable configured to perform CRUD.
  */
-@Named("currentStudentCrudView")
+@Named("currentTaskCrudView")
 @ViewScoped // create this object for one HTTP request and keep in memory if the next is for the same page
-public class StudentCrudView implements Serializable {
+public class TaskCrudView implements Serializable {
 
     @Inject
-    @Named("memoryStudentService")
-//    @Named("firebaseHttpClientStudentService")
-    private StudentService studentService;
+//    @Named("memoryTaskService")
+    @Named("firebaseMultiTenantHttpClientTaskService")
+    private TaskService taskService;
 
     /**
-     * The selected Student instance to create, edit, update or delete.
+     * The selected Task instance to create, edit, update or delete.
      */
     @Getter
     @Setter
-    private Student selectedStudent;
+    private Task selectedTask;
 
     /**
-     * The unique name of the selected Student instance.
+     * The unique name of the selected Task instance.
      */
     @Getter
     @Setter
     private String selectedId;
 
     /**
-     * The list of Student objects fetched from the data source
+     * The list of Task objects fetched from the data source
      */
     @Getter
-    private List<Student> students;
+    private List<Task> tasks;
 
     /**
-     * Fetch all Student from the data source.
+     * Fetch all Task from the data source.
      * <p>
      * If FacesContext message sent from init() method annotated with @PostConstruct in the Faces backing bean class are not shown on page:
      * 1) Remove the @PostConstruct annotation from the Faces backing bean class
@@ -64,18 +64,18 @@ public class StudentCrudView implements Serializable {
     @PostConstruct
     public void init() {
         try {
-            students = studentService.getAllStudents();
+            tasks = taskService.getAllTasks();
         } catch (Exception e) {
-            Messages.addGlobalError("Error getting students %s", e.getMessage());
+            Messages.addGlobalError("Error getting tasks %s", e.getMessage());
         }
     }
 
     /**
      * Event handler for the New button on the Faces crud page.
-     * Create a new selected Student instance to enter data for.
+     * Create a new selected Task instance to enter data for.
      */
     public void onOpenNew() {
-        selectedStudent = new Student();
+        selectedTask = new Task();
         selectedId = null;
     }
 
@@ -88,8 +88,8 @@ public class StudentCrudView implements Serializable {
     public void onGenerateData() {
         try {
             var faker = new Faker();
-            selectedStudent = Student.of(faker);
-            selectedStudent.setId(selectedId);
+            selectedTask = Task.of(faker);
+            selectedTask.setId(selectedId);
         } catch (Exception e) {
             Messages.addGlobalError("Error generating data {0}", e.getMessage());
         }
@@ -104,26 +104,26 @@ public class StudentCrudView implements Serializable {
 
             // If selectedId is null then create new data otherwise update current data
             if (selectedId == null) {
-                Student createdStudent = studentService.createStudent(selectedStudent);
+                Task createdTask = taskService.createTask(selectedTask);
 
                 // Send a Faces info message that create was successful
-                Messages.addGlobalInfo("Create was successful. {0}", createdStudent.getId());
+                Messages.addGlobalInfo("Create was successful. {0}", createdTask.getId());
                 // Reset the selected instance to null
-                selectedStudent = null;
+                selectedTask = null;
 
             } else {
-                studentService.updateStudent(selectedStudent);
+                taskService.updateTask(selectedTask);
 
                 Messages.addGlobalInfo("Update was successful");
 
             }
 
             // Fetch a list of objects from the data source
-            students = studentService.getAllStudents();
-            PrimeFaces.current().ajax().update("dialogs:messages", "form:dt-Students");
+            tasks = taskService.getAllTasks();
+            PrimeFaces.current().ajax().update("dialogs:messages", "form:dt-Tasks");
 
             // Hide the PrimeFaces dialog
-            PrimeFaces.current().executeScript("PF('manageStudentDialog').hide()");
+            PrimeFaces.current().executeScript("PF('manageTaskDialog').hide()");
         } catch (RuntimeException ex) { // handle application generated exceptions
             Messages.addGlobalError(ex.getMessage());
         } catch (Exception ex) {    // handle system generated exceptions
@@ -139,13 +139,13 @@ public class StudentCrudView implements Serializable {
     public void onDelete() {
         try {
             // Get the unique name of the Json object to delete
-            selectedId = selectedStudent.getId();
-            studentService.deleteStudentById(selectedId);
+            selectedId = selectedTask.getId();
+            taskService.deleteTaskById(selectedId);
             Messages.addGlobalInfo("Delete was successful for id of {0}", selectedId);
             // Fetch new data from the data source
-            students = studentService.getAllStudents();
+            tasks = taskService.getAllTasks();
 
-            PrimeFaces.current().ajax().update("dialogs:messages", "form:dt-Students");
+            PrimeFaces.current().ajax().update("dialogs:messages", "form:dt-Tasks");
         } catch (RuntimeException ex) { // handle application generated exceptions
             Messages.addGlobalError(ex.getMessage());
         } catch (Exception ex) {    // handle system generated exceptions

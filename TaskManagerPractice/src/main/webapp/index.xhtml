@@ -1,0 +1,50 @@
+<!-- This is a Faces composition page that extends the layout template -->
+<ui:composition
+        template="/WEB-INF/faces-templates/layout.xhtml"
+        xmlns:ui="jakarta.faces.facelets"
+        xmlns:h="jakarta.faces.html"
+        xmlns:f="jakarta.faces.core"
+        xmlns:p="primefaces"
+        xmlns:o="omnifaces">
+
+    <ui:define name="title">
+        Task Manager Practice
+    </ui:define>
+
+    <!-- Define main content for the page -->
+    <ui:define name="maincontent">
+        <h1>Task Manager Practice</h1>
+
+        <p>
+            This practice project is used for DMIT2015 Lesson 7–10.
+        </p>
+
+        <p>
+            You will use this project to practice Strategy Pattern architecture,
+            memory persistence, Firebase Realtime Database, Firebase Authentication,
+            and multi-tenant user-scoped data.
+        </p>
+
+        <p:messages globalOnly="true" />
+
+        <h2>Recommended Workflow</h2>
+
+        <ol>
+            <li>Confirm the starter project runs.</li>
+            <li>Implement and test the memory service.</li>
+            <li>Switch to Firebase Realtime Database.</li>
+            <li>Add Firebase Authentication.</li>
+            <li>Convert to multi-tenant user-scoped data.</li>
+            <li>Configure Firebase security rules.</li>
+        </ol>
+
+        <p>
+            Do not start directly with multi-tenant Firebase.
+        </p>
+
+        <p>
+            Use the navigation menu to access the practice pages as you create them.
+        </p>
+    </ui:define>
+
+</ui:composition>

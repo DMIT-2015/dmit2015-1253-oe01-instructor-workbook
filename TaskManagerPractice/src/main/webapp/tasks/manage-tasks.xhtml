@@ -14,10 +14,10 @@
         template="/WEB-INF/faces-templates/layout.xhtml"
 >
 
-    <ui:param name="title" value="Student - CRUD"/>
+    <ui:param name="title" value="Task - CRUD"/>
 
     <ui:param name="internalstyles"
-              value=".Students-table-header { display: flex; align-items:center; justify-content: space-between; flex-wrap: wrap; }"/>
+              value=".Tasks-table-header { display: flex; align-items:center; justify-content: space-between; flex-wrap: wrap; }"/>
 
     <ui:define name="maincontent">
         <f:metadata>
@@ -35,65 +35,64 @@
                         <p:commandButton id="newButton"
                                          value="New"
                                          icon="pi pi-plus"
-                                         actionListener="#{currentStudentCrudView.onOpenNew}"
-                                         update=":dialogs:manage-Student-content"
-                                         oncomplete="PF('manageStudentDialog').show()"
+                                         actionListener="#{currentTaskCrudView.onOpenNew}"
+                                         update=":dialogs:manage-Task-content"
+                                         oncomplete="PF('manageTaskDialog').show()"
                                          styleClass="ui-button-success"
                                          style="margin-right: .5rem">
-                            <p:resetInput target=":dialogs:manage-Student-content"/>
+                            <p:resetInput target=":dialogs:manage-Task-content"/>
                         </p:commandButton>
                     </p:toolbarGroup>
                 </p:toolbar>
 
-                <p:dataTable id="dt-Students" widgetVar="dtStudents"
-                             value="#{currentStudentCrudView.students}"
+                <p:dataTable id="dt-Tasks" widgetVar="dtTasks"
+                             value="#{currentTaskCrudView.tasks}"
                              var="currentItem"
                              reflow="true"
-                             selection="#{currentStudentCrudView.selectedStudent}"
+                             selection="#{currentTaskCrudView.selectedTask}"
                              rowKey="#{currentItem.id}"
                              paginator="true" rows="10"
                              paginatorPosition="bottom">
 
                     <f:facet name="header">
-                        <div class="Students-table-header">
-                            <span style="font-weight: bold">Students</span>
+                        <div class="Tasks-table-header">
+                            <span style="font-weight: bold">Tasks</span>
                             <span class="filter-container ui-input-icon-left">
                                 <i class="pi pi-search"></i>
-                                <p:inputText id="globalFilter" onkeyup="PF('dtStudents').filter()"
-                                             placeholder="Search"/>
+                                <p:inputText id="globalFilter" onkeyup="PF('dtTasks').filter()" placeholder="Search"/>
                             </span>
                         </div>
                     </f:facet>
 
-                    <p:column headerText="First Name" filterBy="#{currentItem.firstName}">
-                        <h:outputText value="#{currentItem.firstName}"/>
+                    <p:column headerText="Description" filterBy="#{currentItem.description}">
+                        <h:outputText value="#{currentItem.description}"/>
                     </p:column>
-                    <p:column headerText="Last Name" filterBy="#{currentItem.lastName}">
-                        <h:outputText value="#{currentItem.lastName}"/>
+                    <p:column headerText="Priority" filterBy="#{currentItem.priority}">
+                        <h:outputText value="#{currentItem.priority}"/>
                     </p:column>
-                    <p:column headerText="Section">
-                        <h:outputText value="#{currentItem.section}"/>
+                    <p:column headerText="Done">
+                        <h:outputText value="#{currentItem.done}"/>
                     </p:column>
 
                     <p:column exportable="false" ariaHeaderText="Actions">
                         <p:commandButton icon="pi pi-pencil"
-                                         update=":dialogs:manage-Student-content"
-                                         oncomplete="PF('manageStudentDialog').show()"
+                                         update=":dialogs:manage-Task-content"
+                                         oncomplete="PF('manageTaskDialog').show()"
                                          styleClass="edit-button rounded-button ui-button-success"
                                          process="@this">
                             <f:setPropertyActionListener value="#{currentItem}"
-                                                         target="#{currentStudentCrudView.selectedStudent}"/>
+                                                         target="#{currentTaskCrudView.selectedTask}"/>
                             <f:setPropertyActionListener value="#{currentItem.id}"
-                                                         target="#{currentStudentCrudView.selectedId}"/>
-                            <p:resetInput target=":dialogs:manage-Student-content"/>
+                                                         target="#{currentTaskCrudView.selectedId}"/>
+                            <p:resetInput target=":dialogs:manage-Task-content"/>
                         </p:commandButton>
                         <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
                                          process="@this"
-                                         oncomplete="PF('deleteStudentDialog').show()">
+                                         oncomplete="PF('deleteTaskDialog').show()">
                             <f:setPropertyActionListener value="#{currentItem}"
-                                                         target="#{currentStudentCrudView.selectedStudent}"/>
+                                                         target="#{currentTaskCrudView.selectedTask}"/>
                             <f:setPropertyActionListener value="#{currentItem.id}"
-                                                         target="#{currentStudentCrudView.selectedId}"/>
+                                                         target="#{currentTaskCrudView.selectedId}"/>
                         </p:commandButton>
                     </p:column>
 
@@ -101,33 +100,40 @@
             </h:form>
 
             <h:form id="dialogs">
-                <p:dialog header="Student Details" showEffect="fade" modal="true" widgetVar="manageStudentDialog"
+                <p:dialog header="Task Details" showEffect="fade" modal="true" widgetVar="manageTaskDialog"
                           responsive="true">
 
-                    <p:outputPanel id="manage-Student-content" class="ui-fluid">
-                        <p:outputPanel rendered="#{not empty currentStudentCrudView.selectedStudent}">
+                    <p:messages id="messages">
+                        <p:autoUpdate/>
+                    </p:messages>
 
+                    <p:outputPanel id="manage-Task-content" class="ui-fluid">
+                        <p:outputPanel rendered="#{not empty currentTaskCrudView.selectedTask}">
                             <div class="field">
-                                <p:outputLabel for="@next">First Name</p:outputLabel>
+                                <p:outputLabel for="@next">Description</p:outputLabel>
                                 <p:inputText
-                                        id="firstName"
-                                        value="#{currentStudentCrudView.selectedStudent.firstName}">
+                                        id="description"
+                                        value="#{currentTaskCrudView.selectedTask.description}">
                                 </p:inputText>
                                 <p:message for="@previous" />
                             </div>
                             <div class="field">
-                                <p:outputLabel for="@next">Last Name</p:outputLabel>
-                                <p:inputText
-                                        id="lastName"
-                                        value="#{currentStudentCrudView.selectedStudent.lastName}">
-                                </p:inputText>
+                                <p:outputLabel for="@next">Priority</p:outputLabel>
+                                <p:selectOneMenu
+                                        id="priority"
+                                        value="#{currentTaskCrudView.selectedTask.priority}">
+                                    <f:selectItem itemLabel="Low" itemValue="Low" />
+                                    <f:selectItem itemLabel="Medium" itemValue="Medium" />
+                                    <f:selectItem itemLabel="High" itemValue="High" />
+                                </p:selectOneMenu>
+                                <p:message for="priority" />
                             </div>
                             <div class="field">
-                                <p:outputLabel for="@next">Section</p:outputLabel>
-                                <p:inputText
-                                        id="section"
-                                        value="#{currentStudentCrudView.selectedStudent.section}">
-                                </p:inputText>
+                                <p:outputLabel for="@next">Done</p:outputLabel>
+                                <p:selectBooleanCheckbox
+                                        id="done"
+                                        value="#{currentTaskCrudView.selectedTask.done}">
+                                </p:selectBooleanCheckbox>
                                 <p:message for="@previous" />
                             </div>
 
@@ -138,33 +144,33 @@
                         <p:commandButton id="saveButton"
                                          value="Save"
                                          icon="pi pi-check"
-                                         actionListener="#{currentStudentCrudView.onSave}"
-                                         update="manage-Student-content"
-                                         process="manage-Student-content @this"/>
+                                         actionListener="#{currentTaskCrudView.onSave}"
+                                         update="manage-Task-content"
+                                         process="manage-Task-content @this"/>
 
                         <p:commandButton id="generateDataButton"
                                          value="Generate Data"
                                          icon="pi pi-calculator"
-                                         actionListener="#{currentStudentCrudView.onGenerateData}"
-                                         update="manage-Student-content"
+                                         actionListener="#{currentTaskCrudView.onGenerateData}"
+                                         update="manage-Task-content"
                                          process="@this"/>
 
                         <p:commandButton id="cancelButton"
                                          value="Cancel"
                                          icon="pi pi-times"
-                                         onclick="PF('manageStudentDialog').hide()"
+                                         onclick="PF('manageTaskDialog').hide()"
                                          class="ui-button-secondary"
                                          type="button"/>
                     </f:facet>
                 </p:dialog>
 
-                <p:confirmDialog widgetVar="deleteStudentDialog" showEffect="fade" width="300"
-                                 message="Delete the Student?" header="Confirm" severity="warn">
-                    <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{currentStudentCrudView.onDelete}"
+                <p:confirmDialog widgetVar="deleteTaskDialog" showEffect="fade" width="300"
+                                 message="Delete the Task?" header="Confirm" severity="warn">
+                    <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{currentTaskCrudView.onDelete}"
                                      process="@this"
-                                     oncomplete="PF('deleteStudentDialog').hide()"/>
+                                     oncomplete="PF('deleteTaskDialog').hide()"/>
                     <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
-                                     onclick="PF('deleteStudentDialog').hide()"/>
+                                     onclick="PF('deleteTaskDialog').hide()"/>
                 </p:confirmDialog>
 
                 <p:confirmDialog global="true" showEffect="fade" width="300">

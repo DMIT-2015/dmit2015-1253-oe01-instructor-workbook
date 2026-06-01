@@ -21,6 +21,7 @@ public class Student {
     @Size(min=5)
     private String section;
 
+    // Copy Constructor required for Memory Service Implementation
     public Student(Student other) {
         this.id = other.getId();
         this.firstName = other.getFirstName();
@@ -28,10 +29,12 @@ public class Student {
         this.section = other.getSection();
     }
 
+    // static copyOf method required for Memory Service Implementation
     public static Student copyOf(Student other) {
         return new Student(other);
     }
 
+    // static of method required for Memory Service Implementation
     public static Student of(Faker faker) {
         Student newStudent = new Student();
         newStudent.setId(UUID.randomUUID().toString());
