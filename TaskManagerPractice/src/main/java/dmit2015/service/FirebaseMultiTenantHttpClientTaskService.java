@@ -93,6 +93,7 @@ public class FirebaseMultiTenantHttpClientTaskService implements TaskService {
         String firebaseUserId = firebaseAuthSignInSession.getFirebaseAuthSignInResponsePayload().getLocalId();
         String firebaseToken = firebaseAuthSignInSession.getFirebaseAuthSignInResponsePayload().getIdToken();
         String modelInstanceId = UUID.randomUUID().toString();
+        task.setId(modelInstanceId);
         // Set the path in the database for content-owner access only data
         jsonAllDataPath = String.format("%s/%s/%s/%s/%s.json?auth=%s",
                 firebaseRtdbBaseUrl,
