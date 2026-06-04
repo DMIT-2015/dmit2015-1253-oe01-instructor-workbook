@@ -71,6 +71,19 @@
                     <p:column headerText="Course Section">
                         <h:outputText value="#{currentItem.courseSection}"/>
                     </p:column>
+                    <p:column headerText="Version">
+                        <h:outputText value="#{currentItem.version}"/>
+                    </p:column>
+                    <p:column headerText="Create Time">
+                        <h:outputText value="#{currentItem.createTime}">
+                            <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm:ss a" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Update Time">
+                        <h:outputText value="#{currentItem.updateTime}">
+                            <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm:ss a" />
+                        </h:outputText>
+                    </p:column>
 
                     <p:column exportable="false" ariaHeaderText="Actions">
                         <p:commandButton icon="pi pi-pencil"
