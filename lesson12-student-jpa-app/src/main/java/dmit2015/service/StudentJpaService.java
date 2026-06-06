@@ -15,7 +15,7 @@ import java.util.Optional;
 public class StudentJpaService implements StudentService {
 
     // Assign a unitName if there are more than one persistence unit defined in persistence.xml
-    @PersistenceContext //(unitName="pu-name-in-persistence.xml")
+    @PersistenceContext //(unitName="postgresql-jpa-pu")
     private EntityManager entityManager;
 
     @Override
@@ -81,6 +81,16 @@ public class StudentJpaService implements StudentService {
         } else {
             throw new RuntimeException("Could not find Student with id: " + id);
         }
+    }
+
+    @Override
+    public void deleteAllStudents() {
+        entityManager.createQuery("DELETE FROM Student").executeUpdate();
+    }
+
+    @Override
+    public long count() {
+        return entityManager.createQuery("SELECT COUNT(o) FROM Student o", Long.class).getSingleResult();
     }
 
 }
