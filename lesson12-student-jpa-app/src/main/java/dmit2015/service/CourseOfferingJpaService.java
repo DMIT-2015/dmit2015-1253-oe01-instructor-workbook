@@ -45,7 +45,7 @@ public class CourseOfferingJpaService implements CourseOfferingService {
 
     @Override
     public List<CourseOffering> getAllCourseOfferings() {
-        return entityManager.createQuery("SELECT o FROM CourseOffering o ", CourseOffering.class)
+        return entityManager.createQuery("SELECT co FROM CourseOffering co ", CourseOffering.class)
                 .getResultList();
     }
 
@@ -83,6 +83,12 @@ public class CourseOfferingJpaService implements CourseOfferingService {
         } else {
             throw new RuntimeException("Could not find CourseOffering with id: " + id);
         }
+    }
+
+    @Override
+    public void deleteAllCourseOfferings() {
+        entityManager.createQuery("DELETE FROM CourseOffering")
+                .executeUpdate();
     }
 
 }

@@ -16,4 +16,6 @@ public interface CourseOfferingService {
     CourseOffering updateCourseOffering(CourseOffering courseOffering);
 
     void deleteCourseOfferingById(Long id);
+
+    void deleteAllCourseOfferings();
 }
