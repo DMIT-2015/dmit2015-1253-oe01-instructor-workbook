@@ -151,7 +151,47 @@ public class CourseOfferingJpaServiceIT { // The class must be declared as publi
 
     }
 
+//    @Order(4)
+//    @Test
+//    void givenExistingEntity_whenUpdatedCourseOffering_thenCourseOfferingIsUpdated() {
+//        // Arrange
+//        CourseOffering newCourseOffering = CourseOffering.of(faker);
+//
+//        newCourseOffering = courseOfferingService.createCourseOffering(newCourseOffering);
+//        // TODO: change the values of all properties
+//        //newCourseOffering.setProperty1(faker.providerName().methodName());
+//        //newCourseOffering.setProperty2(faker.providerName().methodName());
+//        //newCourseOffering.setProperty3(faker.providerName().methodName());
+//
+//        // Act
+//        CourseOffering updatedCourseOffering = courseOfferingService.updateCourseOffering(newCourseOffering);
+//
+//        // Assert
+//        Optional<CourseOffering> optionalCourseOffering = courseOfferingService.getCourseOfferingById(updatedCourseOffering.getId());
+//        assertThat(optionalCourseOffering.isPresent())
+//                .isTrue();
+//        var existingCourseOffering = optionalCourseOffering.orElseThrow();
+//        assertThat(existingCourseOffering)
+//                .usingRecursiveComparison()
+//                // .ignoringFields("field1", "field2")
+//                .isEqualTo(newCourseOffering);
+//
+//    }
 
+//    @Order(5)
+//    @Test
+//    void givenExistingId_whenDeleteCourseOffering_thenCourseOfferingIsDeleted() {
+//        // Arrange
+//        CourseOffering newCourseOffering = CourseOffering.of(faker);
+//        newCourseOffering = courseOfferingService.createCourseOffering(newCourseOffering);
+//        // Act
+//        courseOfferingService.deleteCourseOfferingById(newCourseOffering.getId());
+//        // Assert
+//        Optional<CourseOffering> optionalCourseOffering = courseOfferingService.getCourseOfferingById(newCourseOffering.getId());
+//        assertThat(optionalCourseOffering.isPresent())
+//                .isFalse();
+//
+//    }
 
     @Order(6)
     @ParameterizedTest

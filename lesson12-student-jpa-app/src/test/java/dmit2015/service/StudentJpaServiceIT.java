@@ -230,30 +230,29 @@ public class StudentJpaServiceIT { // The class must be declared as public
 
     }
 
-//    @Order(7)
-//    @ParameterizedTest
-//    // TODO Change the value below
-//    @CsvSource(value = {
-//            "Invalid Property1Value, Property2Value, Property3Value, ExpectedExceptionMessage",
-//            "Property1Value, Invalid Property2Value, Property3Value, ExpectedExceptionMessage",
-//    }, nullValues = {"null"})
-//    void givenEntityWithValidationErrors_whenAddStudent_thenThrowException(
-//            String property1,
-//            String property2,
-//            String property3,
-//            String expectedExceptionMessage
-//    ) {
-//        // Arrange
-//        Student newStudent = new Student();
-//        // TODO uncomment below and set each property of Student using parameter values
-//        // newStudent.setProperty1(property1);
-//        // newStudent.setProperty2(property2);
-//        // newStudent.setProperty3(property3);
-//
-//        // Act + Assert using AssertJ to verify the exception message contains the expected text
-//        assertThatThrownBy(() -> studentService.createStudent(newStudent))
-//                .hasStackTraceContaining(expectedExceptionMessage);
-//
-//    }
+    @Order(7)
+    @ParameterizedTest
+    @CsvSource(value = {
+            ", Lee, DMIT2015-1253-OE01, First name is required.",
+            "Bruce, , DMIT2015-1253-OE01, Last name is required.",
+    }, nullValues = {"null"})
+    void givenEntityWithValidationErrors_whenAddStudent_thenThrowException(
+            String firstName,
+            String lastName,
+            String courseSection,
+            String expectedExceptionMessage
+    ) {
+        // Arrange
+        Student newStudent = new Student();
+
+         newStudent.setFirstName(firstName);
+         newStudent.setLastName(lastName);
+         newStudent.setCourseSection(courseSection);
+
+        // Act + Assert using AssertJ to verify the exception message contains the expected text
+        assertThatThrownBy(() -> studentService.createStudent(newStudent))
+                .hasStackTraceContaining(expectedExceptionMessage);
+
+    }
 
 }
