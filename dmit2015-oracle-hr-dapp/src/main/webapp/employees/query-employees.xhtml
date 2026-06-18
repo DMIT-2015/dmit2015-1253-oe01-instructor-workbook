@@ -30,10 +30,53 @@
                                         forceSelection="true"
                                         scrollHeight="250"/>
                     </div>
+                    <p:commandButton value="Search"
+                                     action="#{employeeQueryView.onSubmit()}"
+                                     update=":messages :growl @form"
+                                     />
 
+                    <p:commandButton value="Cancel"
+                                     action="#{employeeQueryView.onClear()}"
+                                     update="@form" />
 
                 </p:panel>
+
+                <p:dataTable id="dataTable"
+                             value="#{employeeQueryView.queryResults}"
+                             var="currentEmployee">
+                    <p:column headerText="Full Name">
+                        <h:outputText value="#{currentEmployee.fullName}" />
+                    </p:column>
+
+                    <p:column headerText="Hire Date">
+                        <h:outputText value="#{currentEmployee.hireDate}">
+                            <f:convertDateTime type="localDate" pattern="yyyy-MM-dd" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Salary">
+                        <h:outputText value="#{currentEmployee.salary}">
+                            <f:convertNumber type="currency"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Department Name">
+                        <h:outputText value="#{currentEmployee.department.departmentName}" />
+                    </p:column>
+
+                    <p:column headerText="Job Title">
+                        <h:outputText value="#{currentEmployee.job.jobTitle}" />
+                    </p:column>
+
+                    <p:column headerText="Manager Name">
+<h:outputText value="#{(empty currentEmployee.manager) ? 'No Manager' : currentEmployee.manager.fullName}" />
+                    </p:column>
+
+                </p:dataTable>
             </h:form>
+
+
+
         </div>
     </ui:define>
 
