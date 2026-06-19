@@ -2,6 +2,7 @@ package dmit2015.repository;
 
 import dmit2015.entity.Department;
 import dmit2015.entity.Employee;
+import dmit2015.entity.Job;
 import dmit2015.entity.Region;
 import jakarta.data.repository.*;
 
@@ -47,4 +48,24 @@ where e.department.id = ?1
 """)
     List<Employee> employeesByDepartmentId(Short departmentId);
 
+    @Query("""
+select j
+ from Job j
+ where lower(j.jobTitle) like lower(?1)
+ order by j.jobTitle
+""")
+    List<Job> jobsByJobTitle(String jobTitle);
+
+    @Find
+    Job jobByJobId(String jobId);
+
+    @Query("""
+select e
+from Employee e
+    join fetch e.department
+    join fetch e.job
+    join fetch e.manager
+where e.job.jobId = ?1
+""")
+    List<Employee> employeesByJobId(String jobId);
 }

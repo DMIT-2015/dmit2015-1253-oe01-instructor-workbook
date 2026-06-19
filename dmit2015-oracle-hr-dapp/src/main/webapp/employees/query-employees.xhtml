@@ -30,14 +30,32 @@
                                         forceSelection="true"
                                         scrollHeight="250"/>
                     </div>
-                    <p:commandButton value="Search"
-                                     action="#{employeeQueryView.onSubmit()}"
+                    <p:commandButton value="Search by Department"
+                                     action="#{employeeQueryView.onSearchByDepartment()}"
                                      update=":messages :growl @form"
                                      />
 
                     <p:commandButton value="Cancel"
                                      action="#{employeeQueryView.onClear()}"
                                      update="@form" />
+
+                <div class="field col-12 md:col-4">
+                    <p:outputLabel value="Job Title" for="@next"/>
+                    <p:autoComplete id="acJob"
+                                    value="#{employeeQueryView.selectedJob}"
+                                    completeMethod="#{employeeQueryView.completeJob}"
+                                    var="currentJob"
+                                    itemLabel="#{currentJob.jobTitle}"
+                                    itemValue="#{currentJob}"
+                                    converter="#{jobConverter}"
+                                    forceSelection="true"
+                                    scrollHeight="250"/>
+                </div>
+
+                    <p:commandButton value="Search by Job"
+                                     action="#{employeeQueryView.onSearchByJob()}"
+                                     update=":messages :growl dataTable"
+                    />
 
                 </p:panel>
 
