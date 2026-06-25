@@ -246,6 +246,10 @@ deploy, redeploy, undeploy or run your application.  -->
                         <server-arg>-b=0.0.0.0</server-arg>
                     </server-args>
 
+                    <scripts>
+                        <script>./wildfly-scripts/configure-elytron.cli</script>
+                    </scripts>
+
                 </configuration>
 
                 <executions>
