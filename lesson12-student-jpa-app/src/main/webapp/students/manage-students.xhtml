@@ -62,6 +62,10 @@
                         </div>
                     </f:facet>
 
+                    <p:column headerText="username" filterBy="#{currentItem.username}">
+                        <h:outputText value="#{currentItem.username}"/>
+                    </p:column>
+
                     <p:column headerText="Last Name" filterBy="#{currentItem.lastName}">
                         <h:outputText value="#{currentItem.lastName}"/>
                     </p:column>

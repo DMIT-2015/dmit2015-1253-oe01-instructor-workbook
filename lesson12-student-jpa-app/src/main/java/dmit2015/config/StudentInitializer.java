@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.random.RandomGenerator;
 
 @ApplicationScoped
 public class StudentInitializer {
@@ -43,9 +44,12 @@ public class StudentInitializer {
         if (studentJpaService.count() == 0) {
 
             try {
-                Faker faker = new Faker();
+               Faker faker = new Faker();
+               String[] salesRoleUsernames = {"DLEE","PHALL","COLSEN"};
                for(int count = 1; count <= 32; count++) {
                    Student currentStudent = Student.of(faker);
+                   int randomIndex = RandomGenerator.getDefault().nextInt(0, salesRoleUsernames.length);
+                   currentStudent.setUsername(salesRoleUsernames[randomIndex].toLowerCase());
                    studentJpaService.createStudent(currentStudent);
                }
             } catch (Exception ex) {

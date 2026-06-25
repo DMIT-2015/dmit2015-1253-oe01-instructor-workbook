@@ -14,6 +14,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Student {
 
+    @Column(length = 32, nullable = false)
+    private String username;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_id")

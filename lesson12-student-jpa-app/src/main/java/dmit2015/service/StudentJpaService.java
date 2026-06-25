@@ -2,9 +2,11 @@ package dmit2015.service;
 
 import dmit2015.model.Student;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.security.enterprise.SecurityContext;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
@@ -13,6 +15,9 @@ import java.util.Optional;
 @Named("jpaStudentService")
 @ApplicationScoped
 public class StudentJpaService implements StudentService {
+
+    @Inject
+    private SecurityContext securityContext;
 
     // Assign a unitName if there are more than one persistence unit defined in persistence.xml
     @PersistenceContext //(unitName="postgresql-jpa-pu")
@@ -24,6 +29,14 @@ public class StudentJpaService implements StudentService {
         // If the primary key is not an identity column then write code below here to
         // 1) Generate a new primary key value
         // 2) Set the primary key value for the new entity
+        String username = securityContext.getCallerPrincipal().getName();
+        if (username.equalsIgnoreCase("anonymous")) {
+            throw new RuntimeException("Access denied. Anonymous users does not have access to this method.");
+        }
+
+        if (student.getUsername() == null) { // temp workaround where initializer is assigning username
+            student.setUsername(username);
+        }
 
         entityManager.persist(student);
         return student;
@@ -45,6 +58,27 @@ public class StudentJpaService implements StudentService {
 
     @Override
     public List<Student> getAllStudents() {
+        // Security Rules:
+        // 1) Sales role can only view data created with their own account
+        // 2) Shipping role can view all data from all users
+        // 3) Anonymous users are denied access
+        String username = securityContext.getCallerPrincipal().getName();
+        if (username.equalsIgnoreCase("anonymous")) {
+            throw new RuntimeException("Access denied. Anonymous users does not have access to this method.");
+        }
+        boolean hasRequiredRoles = securityContext.isCallerInRole("Sales")
+                || securityContext.isCallerInRole("Shipping");
+        if (!hasRequiredRoles) {
+            throw new RuntimeException("Access denied. Your role does not permission to access this method.");
+        }
+        boolean hasSalesRole = securityContext.isCallerInRole("Sales");
+        if (hasSalesRole) {
+            return entityManager.createQuery(
+                    "SELECT s FROM Student s WHERE s.username = :username", Student.class)
+                    .setParameter("username", username)
+                    .getResultList();
+        }
+
         return entityManager.createQuery("SELECT o FROM Student o ", Student.class)
                 .getResultList();
     }
