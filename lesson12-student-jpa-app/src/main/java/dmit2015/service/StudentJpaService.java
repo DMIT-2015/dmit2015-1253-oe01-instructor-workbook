@@ -26,15 +26,15 @@ public class StudentJpaService implements StudentService {
     @Override
     @Transactional
     public Student createStudent(Student student) {
-        // If the primary key is not an identity column then write code below here to
-        // 1) Generate a new primary key value
-        // 2) Set the primary key value for the new entity
+        // Get the username of the authenticated user
         String username = securityContext.getCallerPrincipal().getName();
-        if (username.equalsIgnoreCase("anonymous")) {
+        // If no username is assigned and username is anonymous deny access
+        if (student.getUsername() == null && username.equalsIgnoreCase("anonymous")) {
             throw new RuntimeException("Access denied. Anonymous users does not have access to this method.");
         }
 
-        if (student.getUsername() == null) { // temp workaround where initializer is assigning username
+        // Set the username if it is not assigned by a CDI initializer
+        if (student.getUsername() == null) {
             student.setUsername(username);
         }
 

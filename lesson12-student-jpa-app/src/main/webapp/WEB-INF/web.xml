@@ -81,7 +81,7 @@
     </error-page>
     <error-page>
         <error-code>500</error-code>
-        <location>/errorpages/500.xhtml</location>
+        <location>/errorpages/500.xhtml?fromErrorPage=true</location>
     </error-page>
 
 </web-app>
