@@ -1,0 +1,15 @@
+### Create a new entity
+POST http://localhost:8090/restapi/students
+Content-Type: application/json
+
+{
+  "firstName": "Daniel",
+  "lastName": "Oyarzo",
+  "courseSection": "DMIT2015-OE01-1253"
+}
+
+### GET All entity from REST API endpoint
+GET http://localhost:8090/restapi/students
+
+### GET One entity from REST API endpoint
+GET http://localhost:8090/restapi/students/11
