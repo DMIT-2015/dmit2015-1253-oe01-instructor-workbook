@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dmit2015</groupId>
-    <artifactId>dmit2015-secure-restapi</artifactId>
+    <artifactId>dmit2015-secure-multitenant-restapi</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>dmit2015-restapi</name>
     <packaging>war</packaging>
@@ -179,14 +179,6 @@
             <version>3.27.7</version>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.microprofile</groupId>
-            <artifactId>microprofile</artifactId>
-            <version>7.1</version>
-            <type>pom</type>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
     <build>
@@ -245,7 +237,6 @@
                         <layer>microprofile-config</layer>
                         <layer>microprofile-rest-client</layer>
                         <layer>microprofile-openapi</layer>
-                        <layer>microprofile-jwt</layer>
                     </layers>
 
                     <!-- deploys the app on root web context -->
@@ -253,19 +244,12 @@
 
                     <server-args>
                         <server-arg>-b=0.0.0.0</server-arg>
-                        <server-arg>-Djboss.socket.binding.port-offset=10</server-arg>
+                        <server-arg>-Djboss.socket.binding.port-offset=11</server-arg>
                     </server-args>
-                    <port>10000</port>
+                    <port>10001</port>
 
-                    <!-- Enable debugging -->
-                    <!-- https://www.jetbrains.com/help/idea/attaching-to-local-process.html#attach-to-local -->
-                    <!-- To attach a debugger to the running server from IntelliJ IDEA
-                        1. From the main menu, choose `Run | Attach to Process`
-                        2. IntelliJ IDEA will show the list of running local processes.
-                            Select the process with the `jboss-module.jar (8797)` name to attach to.
-                    -->
                     <debug>true</debug>
-                    <debugPort>8797</debugPort>
+                    <debugPort>8798</debugPort>
                     <debugSuspend>false</debugSuspend>
 
                 </configuration>
