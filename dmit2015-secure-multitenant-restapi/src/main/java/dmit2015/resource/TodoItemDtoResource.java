@@ -5,6 +5,7 @@ import dmit2015.dto.TodoItemDto;
 import dmit2015.mapper.TodoItemMapper;
 import dmit2015.entity.TodoItem;
 import dmit2015.repository.TodoItemRepository;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.OptimisticLockException;
@@ -12,9 +13,13 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
+import org.eclipse.microprofile.jwt.Claim;
+import org.eclipse.microprofile.jwt.ClaimValue;
+import org.eclipse.microprofile.jwt.Claims;
 
 import java.net.URI;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -46,11 +51,20 @@ import java.util.stream.Collectors;
 public class TodoItemDtoResource {
 
     @Inject
+    @Claim(standard = Claims.upn)   // Authenticated username from the JWT.
+    private ClaimValue<Optional<String>> maybeUsername;
+
+    @Inject
+    @Claim(standard = Claims.groups)    // Application roles from the JWT groups claim.
+    private ClaimValue<Optional<Set<String>>> maybeGroups;
+
+    @Inject
     private UriInfo uriInfo;
 
     @Inject
     private TodoItemRepository todoItemRepository;
 
+    @RolesAllowed({"Sales","Shipping"})
     @POST   // POST: restapi/TodoItemsDto
     public Response postTodoItem(TodoItemDto dto) {
         if (dto == null) {
@@ -70,6 +84,7 @@ public class TodoItemDtoResource {
         return Response.created(todoItemsUri).build();
     }
 
+    @RolesAllowed({"Sales","Shipping","Administration"})
     @GET    // GET: restapi/TodoItemsDto/5
     @Path("{id}")
     public Response getTodoItem(@PathParam("id") Long id) {
@@ -85,16 +100,27 @@ public class TodoItemDtoResource {
         return Response.ok(dto).build();
     }
 
+    @RolesAllowed({"Sales","Shipping","Administration"})
     @GET    // GET: restapi/TodoItemsDto
     public Response getTodoItems() {
-        return Response.ok(todoItemRepository.findAll()
+
+        Set<String> groups = maybeGroups.getValue().orElseThrow();
+        if (groups.contains("Administration")) {
+            return Response.ok(todoItemRepository.findAll()
+                            .stream()
+                            .map(TodoItemMapper.INSTANCE::toDto)
+                            .collect(Collectors.toList()))
+                    .build();
+        }
+        String username = maybeUsername.getValue().orElseThrow();
+        return Response.ok(todoItemRepository.findAllByUsername(username)
                 .stream()
-//                .map(this::mapToDto)
                 .map(TodoItemMapper.INSTANCE::toDto)
                 .collect(Collectors.toList()))
                 .build();
     }
 
+    @RolesAllowed({"Sales","Shipping"})
     @PUT    // PUT: restapi/TodoItemsDto/5
     @Path("{id}")
     public Response updateTodoItem(@PathParam("id") Long id, TodoItemDto dto) {
@@ -107,12 +133,18 @@ public class TodoItemDtoResource {
             throw new NotFoundException();
         }
 
+
         String errorMessage = JavaBeanValidator.validateBean(dto);
         if (errorMessage != null) {
             return Response.status(Response.Status.BAD_REQUEST).entity(errorMessage).build();
         }
 
         TodoItem existingTodoItem = optionalTodoItem.orElseThrow();
+        String username = maybeUsername.getValue().orElseThrow();
+        if (!username.equals(existingTodoItem.getUsername())) {
+            throw new ForbiddenException("You are not allowed to update this item");
+        }
+
         // Copy data from the updated entity to the existing entity
         existingTodoItem.setVersion(dto.getVersion());
         existingTodoItem.setTask(dto.getName());
@@ -136,6 +168,7 @@ public class TodoItemDtoResource {
         return Response.ok(dto).build();
     }
 
+    @RolesAllowed({"Sales","Shipping"})
     @DELETE // DELETE: restapi/TodoItemsDto/5
     @Path("{id}")
     public Response deleteTodoItem(@PathParam("id") Long id) {
@@ -143,6 +176,12 @@ public class TodoItemDtoResource {
 
         if (optionalTodoItem.isEmpty()) {
             throw new NotFoundException();
+        }
+
+        TodoItem existingTodoItem = optionalTodoItem.orElseThrow();
+        String username = maybeUsername.getValue().orElseThrow();
+        if (!username.equals(existingTodoItem.getUsername())) {
+            throw new ForbiddenException("You are not allowed to delete this item");
         }
 
         todoItemRepository.deleteById(id);

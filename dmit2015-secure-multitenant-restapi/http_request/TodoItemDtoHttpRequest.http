@@ -1,11 +1,12 @@
 ### Get all TodoItemsDto
-GET http://localhost:8090/restapi/TodoItemsDto
+GET http://localhost:8091/restapi/TodoItemsDto
+Authorization: Bearer {{salesJWT}}
 
 ### Get a single TodoItem with an id of 1
-GET http://localhost:8090/restapi/TodoItemsDto/1
+GET http://localhost:8091/restapi/TodoItemsDto/1
 
 ### POST a new TodoItem with valid data
-POST http://localhost:8090/restapi/TodoItemsDto
+POST http://localhost:8091/restapi/TodoItemsDto
 Content-Type: application/json
 
 {
@@ -14,7 +15,7 @@ Content-Type: application/json
 }
 
 ### Post a new TodoItem with invalid data
-POST http://localhost:8090/restapi/TodoItemsDto
+POST http://localhost:8091/restapi/TodoItemsDto
 Content-Type: application/json
 
 {
@@ -23,7 +24,7 @@ Content-Type: application/json
 }
 
 ### Get a single TodoItem with an id of 4
-GET http://localhost:8090/restapi/TodoItemsDto/4
+GET http://localhost:8091/restapi/TodoItemsDto/4
 
 ### Update TodoItem with an id of 4 with valid data
 PUT http://localhost:8090/restapi/TodoItemsDto/4
