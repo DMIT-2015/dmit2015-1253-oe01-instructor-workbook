@@ -78,6 +78,8 @@ public class TodoItemDtoResource {
 
 //        TodoItem newTodoItem = mapFromDto(dto);
         TodoItem newTodoItem = TodoItemMapper.INSTANCE.toEntity(dto);
+        String username = maybeUsername.getValue().orElseThrow();
+        newTodoItem.setUsername(username);
         todoItemRepository.add(newTodoItem);
 
         URI todoItemsUri = uriInfo.getAbsolutePathBuilder().path(newTodoItem.getId().toString()).build();

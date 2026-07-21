@@ -52,7 +52,7 @@ public class TodoItemRepository {
         return entityManager.createQuery("""
 SELECT ti
 FROM TodoItem ti
-WHERE ti.username = :username
+WHERE lower(ti.username) = lower(:username)
 """, TodoItem.class)
                 .setParameter("username", username)
                 .getResultList();
